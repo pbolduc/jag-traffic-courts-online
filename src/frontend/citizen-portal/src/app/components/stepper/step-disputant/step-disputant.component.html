@@ -181,6 +181,7 @@
   <!-- [secondaryActionButtonLabel]="prevBtnLabel"-->
   <app-stepper-footer (save)="onSubmit()"
                       (back)="onBack()"
+                      [disableSave]="!(form.valid)"
                       [secondaryActionButtonIcon]="previousButtonIcon"
                       [secondaryActionButtonKey]="previousButtonKey"
                       [saveButtonKey]="saveButtonKey"
