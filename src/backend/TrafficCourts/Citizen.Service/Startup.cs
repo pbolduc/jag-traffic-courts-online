@@ -19,7 +19,6 @@ using TrafficCourts.Common.Configuration;
 using TrafficCourts.Messaging;
 using ILogger = Serilog.ILogger;
 using TrafficCourts.Citizen.Service.Services.Impl;
-using StackExchange.Redis;
 
 namespace TrafficCourts.Citizen.Service;
 
@@ -66,7 +65,7 @@ public static class Startup
             builder.AddObjectStorageFilePersistence();
         }
 
-        Configure(builder, configuration?.Redis, logger);
+        Configure(builder, logger);
         Configure(builder, configuration?.FormRecognizer, logger);
         Configure(builder, configuration?.TicketSearchClient, logger);
 
@@ -216,26 +215,14 @@ public static class Startup
     /// Configures Lookup Service.
     /// </summary>
     /// <param name="builder"></param>
-    /// <param name="configuration"></param>
     /// <param name="logger"></param>
-    private static void Configure(WebApplicationBuilder builder, RedisConfigurationProperties? configuration, ILogger logger)
+    private static void Configure(WebApplicationBuilder builder, ILogger logger)
     {
         ArgumentNullException.ThrowIfNull(builder);
         ArgumentNullException.ThrowIfNull(logger);
 
-        if (configuration is null)
-        {
-            configuration = new RedisConfigurationProperties();
-        }
-        ConnectionMultiplexer connectionMultiplexer = ConnectionMultiplexer.Connect(configuration.ConnectionString);
-        builder.Services.AddSingleton<IConnectionMultiplexer>(connectionMultiplexer);
-
-        builder.Services.AddSingleton<ILookupService>(service =>
-        {
-            var redisConnection = service.GetRequiredService<IConnectionMultiplexer>();
-            var logger = service.GetRequiredService<ILogger<RedisLookupService>>();
-            return new RedisLookupService(redisConnection, logger);
-        });
+        builder.AddRedis();
+        builder.Services.AddSingleton<ILookupService, RedisLookupService>();
     }
 
     /// <summary>
