@@ -3,6 +3,7 @@ using TrafficCourts.Common.Utils;
 
 namespace TrafficCourts.Citizen.Service.Models.Dispute
 {
+    [Obsolete("Use NoticeOfDispute")]
     public class TicketDispute
     {
         public string TicketNumber { get; set; }

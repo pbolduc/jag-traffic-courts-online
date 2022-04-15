@@ -3,43 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
-using TrafficCourts.Citizen.Service.Models.Search;
 
 #pragma warning disable CS8618 // these types are deprecated, ignore nullable warnings
 
 namespace TrafficCourts.Citizen.Service.Models
 {
-    public static class DeprecationExtensions
-    {
-        /// <summary>
-        /// Creates deprecated object for backward compatibility.
-        /// </summary>
-        /// <param name="result"></param>
-        /// <returns></returns>
-        public static Deprecated.TicketDispute CreateDeprecated(this TicketSearchResult result)
-        {
-            Deprecated.TicketDispute dispute = new();
-
-            dispute.ViolationTicketNumber = result.ViolationTicketNumber;
-            dispute.ViolationDate = result.ViolationDate.ToString("yyyy-MM-dd");
-            dispute.ViolationTime = result.ViolationTime;
-            dispute.Offences = new List<Deprecated.Offence>();
-
-            foreach (var offence in result.Offences)
-            {
-                dispute.Offences.Add(new Deprecated.Offence
-                {
-                    AmountDue = offence.AmountDue,
-                    OffenceDescription = offence.OffenceDescription,
-                    VehicleDescription = offence.VehicleDescription!,
-                    OffenceNumber = offence.OffenceNumber,
-                });
-            }
-
-            return dispute;
-        }
-    }
-
     namespace Deprecated
     {
         public class TicketDispute

@@ -1,18 +1,14 @@
-﻿using System.IO;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
 using TrafficCourts.Citizen.Service.Features.Tickets;
-using TrafficCourts.Citizen.Service.Models;
 using TrafficCourts.Citizen.Service.Models.Deprecated;
-using TrafficCourts.Citizen.Service.Models.Search;
 using TrafficCourts.Citizen.Service.Models.Tickets;
 using TrafficCourts.Citizen.Service.Validators;
 
 namespace TrafficCourts.Citizen.Service.Controllers
 {
-
     [ApiController]
     [Route("api/[controller]/[action]")]
     public class TicketsController : ControllerBase
@@ -41,7 +37,7 @@ namespace TrafficCourts.Citizen.Service.Controllers
         /// <response code="404">The violation ticket was not found.</response>
         /// <response code="500">There was a server error that prevented the search from completing successfully.</response>
         [HttpGet]
-        [ProducesResponseType(typeof(TicketSearchResult), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ViolationTicket), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         public async Task<IActionResult> SearchAsync(
@@ -136,42 +132,6 @@ namespace TrafficCourts.Citizen.Service.Controllers
         // ---------------------------------------------------------------------------
         // Obsolete actions
         // ---------------------------------------------------------------------------
-
-        /// <summary>
-        /// This API is depricated. Use /api/tickets/search instead.
-        /// </summary>
-        /// <param name="ticketNumber">The violation ticket number. Must start with two upper case letters and end with eight digits.</param>
-        /// <param name="time">The time the violation ticket number was issued. Must be formatted a valid 24-hour clock, HH:MM.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns></returns>
-        [Obsolete($"Use {nameof(SearchAsync)}")]
-        [HttpGet]
-        [ProducesResponseType(typeof(Models.Deprecated.TicketDispute), (int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-        public async Task<IActionResult> TicketAsync(
-            [FromQuery]
-            [Required]
-            [RegularExpression(Search.Request.TicketNumberRegex, ErrorMessage = "ticketNumber must start with two upper case letters and 6 or more numbers")] string ticketNumber,
-            [FromQuery]
-            [Required]
-            [RegularExpression(Search.Request.TimeRegex, ErrorMessage = "time must be properly formatted 24 hour clock")] string time,
-            CancellationToken cancellationToken)
-        {
-            Search.Request request = new(ticketNumber, time);
-            Search.Response response = await _mediator.Send(request, cancellationToken);
-
-            if (response == Search.Response.Empty)
-            {
-                return NotFound();
-            }
-
-            var result = response.Result.Match<IActionResult>(
-                ticket => { return Ok(ticket.CreateDeprecated()); },
-                exception => { return StatusCode(StatusCodes.Status500InternalServerError); });
-
-            return result;
-        }
 
         [Obsolete]
         [HttpGet]

@@ -251,13 +251,25 @@ public class OcrViolationTicket
         }
     }
 
+    /// <summary>
+    /// A list of 4 points representing the quadrilateral bounding box that 
+    /// outlines the text. The points are listed in clockwise order relative 
+    /// to the text orientation: top-left, top-right, bottom-right, bottom-left.
+    /// </summary>
     public class BoundingBox
     {
         public List<Point> Points { get; set; } = new List<Point>();
     }
 
+    /// <summary>
+    /// The x, y coordinate of a point on a bounding box.
+    /// </summary>
     public class Point
     {
+        public Point()
+        {
+        }
+
         public Point(float x, float y)
         {
             this.X = x;
@@ -267,5 +279,4 @@ public class OcrViolationTicket
         public float X { get; set; }
         public float Y { get; set; }
     }
-
 }

@@ -5,9 +5,8 @@ using OneOf;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using TrafficCourts.Citizen.Service.Logging;
-using TrafficCourts.Citizen.Service.Models.Search;
+using TrafficCourts.Citizen.Service.Models.Tickets;
 using TrafficCourts.Ticket.Search.Service;
-using TicketSearchResult = TrafficCourts.Citizen.Service.Models.Search.TicketSearchResult;
 
 namespace TrafficCourts.Citizen.Service.Features.Tickets
 {
@@ -67,29 +66,26 @@ namespace TrafficCourts.Citizen.Service.Features.Tickets
                 if (reply.ViolationDate is null) throw new ArgumentException("Search reply does not contain a violation date", nameof(reply));
                 if (reply.ViolationTime is null) throw new ArgumentException("Search reply does not contain a violation time", nameof(reply));
 
-                TicketSearchResult ticketSearchResult = new()
+                ViolationTicket ticket = new()
                 {
-                    ViolationTicketNumber = reply.ViolationTicketNumber,
-                    ViolationDate = new DateTime(reply.ViolationDate.Year, reply.ViolationDate.Month, reply.ViolationDate.Day),
-                    ViolationTime = $"{reply.ViolationTime.Hour:d2}:{reply.ViolationTime.Minute:d2}"
+                    TicketNumber = reply.ViolationTicketNumber,
+                    IssuedDate = new DateTime(reply.ViolationDate.Year, reply.ViolationDate.Month, reply.ViolationDate.Day, reply.ViolationTime.Hour, reply.ViolationTime.Minute, 0, DateTimeKind.Unspecified),
                 };
 
                 foreach (Offence offence in reply.Offences)
                 {
-                    TicketOffence ticketOffence = new()
+                    ViolationTicketCount count = new()
                     {
                         AmountDue = offence.AmountDue / 100m,
-                        OffenceDescription = offence.OffenceDescription,
-                        VehicleDescription = offence.VehicleDescription,
-                        OffenceNumber = offence.OffenceNumber,
-                        TicketedAmount = offence.TicketedAmount / 100m,
-                        InvoiceType = offence.InvoiceType
+                        Description = offence.OffenceDescription,
+                        Count = (short)offence.OffenceNumber,
+                        TicketedAmount = offence.TicketedAmount / 100m
                     };
 
-                    ticketSearchResult.Offences.Add(ticketOffence);
+                    ticket.Counts.Add(count);
                 }
 
-                Result = ticketSearchResult;
+                Result = ticket;
             }
 
             public Response(Exception exception)
@@ -101,9 +97,7 @@ namespace TrafficCourts.Citizen.Service.Features.Tickets
             /// <summary>
             /// The result value.
             /// </summary>
-            public OneOf<TicketSearchResult, Exception> Result { get; }
-
-            public TicketSearchResult? Ticket { get; }
+            public OneOf<ViolationTicket, Exception> Result { get; }
 
             public static readonly Response Empty = new();
         }
