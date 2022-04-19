@@ -151,7 +151,7 @@ public class NoticeOfDispute
     /// If not specified, no interpreter is required or will be provided.
     /// </summary>
     [JsonPropertyName("interpreter_language")]
-    [MaxLength(20)]
+    [MaxLength(50)]
     public string? InterpreterLanguage { get; set; }
 
     /// <summary>
