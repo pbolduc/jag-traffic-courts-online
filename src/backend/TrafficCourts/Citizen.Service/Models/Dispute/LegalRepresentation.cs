@@ -23,36 +23,19 @@ public class LegalRepresentation
     [MaxLength(255)]
     public string? LawyerFullName { get; set; }
 
-    [JsonPropertyName("lawyer_email_address")]
+    /// <summary>
+    /// The email address of the lawyer.
+    /// </summary>
+    [JsonPropertyName("email_address")]
     [SwaggerSchema(Format = "email")]
     [MaxLength(255)]
     public string? LawyerEmail { get; set; }
 
     /// <summary>
-    /// The mailing address of the lawyer. 
+    /// The full mailing address of the lawyer, including street address, city, province and postal code.
     /// </summary>
-    [JsonPropertyName("address")]
-    [MaxLength(30)]
+    [JsonPropertyName("full_address")]
+    [MaxLength(255)]
     public string? Address { get; set; }
 
-    /// <summary>
-    /// The mailing address city of the lawyer.
-    /// </summary>
-    [JsonPropertyName("city")]
-    [MaxLength(30)]
-    public string? City { get; set; }
-
-    /// <summary>
-    /// The mailing address province of the lawyer.
-    /// </summary>
-    [JsonPropertyName("province")]
-    [MaxLength(30)]
-    public string? Province { get; set; }
-
-    /// <summary>
-    /// The mailing address postal code or zip code of the lawyer.
-    /// </summary>
-    [JsonPropertyName("postal_code")]
-    [MaxLength(6)]
-    public string? PostalCode { get; set; }
 }

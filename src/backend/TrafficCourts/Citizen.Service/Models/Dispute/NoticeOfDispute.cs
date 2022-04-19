@@ -144,6 +144,7 @@ public class NoticeOfDispute
     /// <summary>
     /// The legal council the disputant is intended to be represented by. Required if represented_by_lawyer is true.
     /// </summary>
+    [JsonPropertyName("legal_representation")]
     public LegalRepresentation? LegalRepresentation { get; set; }
 
     /// <summary>
@@ -157,9 +158,25 @@ public class NoticeOfDispute
     /// <summary>
     /// The number of witnesses the disputant intends to call. 
     /// </summary>
-    [JsonPropertyName("call_witness_count")]
+    [JsonPropertyName("witness_count")]
     [Range(0, 99)]
     public short NumberOfWitnesses { get; set; }
+
+    /// <summary>
+    /// The disputant has indicated they are guilty on one or more counts, does not want to appear in court
+    /// and has requested a fine reduction. This contains the disputant's reason for this request.
+    /// </summary>
+    [JsonPropertyName("fine_reduction_reason")]
+    [MaxLength(255)]
+    public string? FineReductionReason { get; set; }
+
+    /// <summary>
+    /// The disputant has indicated they are guilty on one or more counts, does not want to appear in court
+    /// and has requested more time to pay. This contains the disputant's reason for this request. The 
+    /// </summary>
+    [JsonPropertyName("time_to_pay_reason")]
+    [MaxLength(255)]
+    public string? TimeToPayReason { get; set; }
 
     #endregion
 }
