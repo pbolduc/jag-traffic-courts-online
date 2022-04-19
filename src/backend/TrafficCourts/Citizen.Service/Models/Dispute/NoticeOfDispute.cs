@@ -142,6 +142,11 @@ public class NoticeOfDispute
     public bool? RepresentedByLawyer { get; set; }
 
     /// <summary>
+    /// The legal council the disputant is intended to be represented by. Required if represented_by_lawyer is true.
+    /// </summary>
+    public LegalRepresentation? LegalRepresentation { get; set; }
+
+    /// <summary>
     /// The disputant requires spoken language interpreter. The language name is indicated in this field.
     /// If not specified, no interpreter is required or will be provided.
     /// </summary>
@@ -150,10 +155,11 @@ public class NoticeOfDispute
     public string? InterpreterLanguage { get; set; }
 
     /// <summary>
-    ///The disputant intends to call a witness. If not specified, defaults to false.
+    /// The number of witnesses the disputant intends to call. 
     /// </summary>
-    [JsonPropertyName("call_witness")]
-    public bool? WillCallWitness { get; set; }
+    [JsonPropertyName("call_witness_count")]
+    [Range(0, 99)]
+    public short NumberOfWitnesses { get; set; }
 
     #endregion
 }
