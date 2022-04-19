@@ -29,7 +29,7 @@
           </div>
         </div>
 
-        <section>
+        <!--section>
           <app-address-form-autocomplete
             (autocompleteAddress)="onAutocomplete($event)">
             <button *ngIf="showManualButton"
@@ -42,9 +42,9 @@
               Add address manually
             </button>
           </app-address-form-autocomplete>
-        </section>
+        </section -->
 
-        <section [ngClass]="{'hide-address': !showAddressFields}">
+        <!-- section [ngClass]="{'hide-address': !showAddressFields}" -->
           <div class="row">
             <div class="col-md-6">
               <mat-form-field class="w-100">
@@ -76,13 +76,16 @@
             <div class="col-md-6">
               <mat-form-field class="w-100">
                 <mat-label>Province</mat-label>
-                <input matInput
-                       formControlName="province" />
+                <mat-select formControlName= "province" >
+                  <mat-option *ngFor="let province of provinces" [value]="province.name">
+                    {{ province.name }}
+                  </mat-option>
+                </mat-select>
                 <mat-error>{{ "error.required" | translate }}</mat-error>
               </mat-form-field>
             </div>
           </div>
-        </section>
+        <!-- /section -->
 
         <div class="row">
 
@@ -94,7 +97,8 @@
                      oninput="this.value = this.value.toUpperCase()"
                      formControlName="postalCode"
                      [showMaskTyped]="true" />
-              <mat-error>{{ "error.required" | translate }}</mat-error>
+              <mat-error *ngIf="form.get('postalCode').hasError('required')">{{ "error.required" | translate }}</mat-error>
+              <mat-error *ngIf="form.get('postalCode').hasError('pattern')">Must be a valid postal code</mat-error>
             </mat-form-field>
           </div>
           <div class="col-md-6">
@@ -154,13 +158,19 @@
                      formControlName="driverLicenseNumber"
                      mask="0000000"
                      [showMaskTyped]="false" />
-              <mat-error>{{ "error.required" | translate }}</mat-error>
+              <mat-error *ngIf="form.get('driverLicenseNumber').hasError('required')">{{ "error.required" | translate }}</mat-error>
+              <mat-error 
+                *ngIf="form.get('driverLicenseNumber').hasError('pattern') ||
+                  form.get('driverLicenseNumber').hasError('minlength') ||
+                  form.get('driverLicenseNumber').hasError('maxlength')">
+                Must be a valid driver's license number of 7 digits
+            </mat-error>
             </mat-form-field>
           </div>
 
           <div class="col-md-6">
             <mat-form-field class="w-100">
-              <mat-label>Province or state of driver's licence</mat-label>
+              <mat-label>Province of state of driver's licence</mat-label>
                      <mat-select formControlName= "driverLicenseProvince" >
                       <mat-option *ngFor="let province of provinces" [value]="province.name">
                         {{ province.name }}

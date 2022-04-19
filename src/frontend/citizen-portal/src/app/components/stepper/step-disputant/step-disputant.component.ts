@@ -89,9 +89,10 @@ export class StepDisputantComponent
   /**
    * @description
    * Whether to show the address line fields.
+   * Commented out address lookup functionality until license issues resolved
    */
-   public showManualButton: boolean;
-   public showAddressFields: boolean;
+  //  public showManualButton: boolean;
+  //  public showAddressFields: boolean;
 
   constructor(
     protected route: ActivatedRoute,
@@ -116,15 +117,15 @@ export class StepDisputantComponent
     this.maxDateOfBirth = new Date();
     this.maxDateOfBirth.setFullYear(today.getFullYear() - this.MINIMUM_AGE);
     this.isMobile = this.utilsService.isMobile();
-    this.showManualButton = true;
-    this.showAddressFields = false;
+    // this.showManualButton = true;
+    // this.showAddressFields = false;
   }
 
   public ngOnInit() {
     this.form = this.disputeFormStateService.stepDisputantForm;
     this.patchForm().then(() => {
-      this.showManualButton = !this.mailingAddress.value;
-      this.showAddressFields = !!this.mailingAddress.value;
+      // this.showManualButton = !this.mailingAddress.value;
+      // this.showAddressFields = !!this.mailingAddress.value;
     });
   }
 
@@ -149,13 +150,13 @@ export class StepDisputantComponent
     this.form.patchValue({postalCode});
     this.form.patchValue({mailingAddress: address});
     this.form.patchValue({city});
-    this.showManualButton = !address;
-    this.showAddressFields = !!address;
+    // this.showManualButton = !address;
+    // this.showAddressFields = !!address;
   }
 
-  public showManualAddress(): void {
-    this.showAddressFields = true;
-  }
+  // public showManualAddress(): void {
+  //   this.showAddressFields = true;
+  // }
 
   public get phoneNumber(): FormControl {
     return this.form.get('phoneNumber') as FormControl;
