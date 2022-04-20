@@ -29,24 +29,9 @@
           </div>
         </div>
 
-        <!--section>
-          <app-address-form-autocomplete
-            (autocompleteAddress)="onAutocomplete($event)">
-            <button *ngIf="showManualButton"
-              mat-button
-              type="button"
-              color="primary"
-              [disabled]="showAddressFields"
-              (click)="showManualAddress()">
-              <mat-icon>add</mat-icon>
-              Add address manually
-            </button>
-          </app-address-form-autocomplete>
-        </section -->
-
-        <!-- section [ngClass]="{'hide-address': !showAddressFields}" -->
-          <div class="row">
-            <div class="col-md-6">
+        <section>
+          <div class="row" *ngIf="showAddressFields == true">
+            <div class="col-12 pb-2">
               <mat-form-field class="w-100">
                 <mat-label>Mailing address</mat-label>
                 <input matInput
@@ -54,16 +39,31 @@
                 <mat-error>{{ "error.required" | translate }}</mat-error>
               </mat-form-field>
             </div>
-            <div class="col-md-6">
-              <mat-form-field class="w-100">
-                <mat-label>Country</mat-label>
-                <input matInput
-                       formControlName="country" />
-                <mat-error>{{ "error.required" | translate }}</mat-error>
-              </mat-form-field>
-            </div>
-          </div>
+          </div>  
+          <app-address-form-autocomplete
+            (autocompleteAddress)="onAutocomplete($event)"
+            (mailingAddress)="onMailingAddress($event)"
+            [disableAutoComplete]="showAddressFields">
+            <button *ngIf="!showAddressFields"
+              mat-button
+              type="button"
+              color="primary"
+              (click)="showManualAddress()">
+              <mat-icon>add</mat-icon>
+              Add address manually
+            </button>
+            <button *ngIf="showAddressFields"
+              mat-button
+              type="button"
+              color="primary"
+              (click)="dontShowManualAddress()">
+              <mat-icon>add</mat-icon>
+              Use postal lookup
+            </button>
+        </app-address-form-autocomplete>
+        </section>
 
+        <section [ngClass]="{'hide-address': !showAddressFields}" *ngIf="showAddressFields == true">
           <div class="row">
             <div class="col-md-6">
               <mat-form-field class="w-100">
@@ -85,11 +85,17 @@
               </mat-form-field>
             </div>
           </div>
-        <!-- /section -->
 
         <div class="row">
-
           <div class="col-md-6">
+            <mat-form-field class="w-100">
+              <mat-label>Country</mat-label>
+              <input matInput
+                     formControlName="country" />
+              <mat-error>{{ "error.required" | translate }}</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-6" *ngIf="showAddressFields == true">
             <mat-form-field class="w-100">
               <mat-label>Postal code</mat-label>
               <input matInput
@@ -101,6 +107,9 @@
               <mat-error *ngIf="form.get('postalCode').hasError('pattern')">Must be a valid postal code</mat-error>
             </mat-form-field>
           </div>
+        </div>
+      </section>
+      <div class="row">
           <div class="col-md-6">
             <mat-form-field class="w-100">
               <mat-label>Birthdate</mat-label>
@@ -120,8 +129,6 @@
                 }}</mat-error>
             </mat-form-field>
           </div>
-        </div>
-        <div class="row">
           <div class="col-md-6">
             <mat-form-field class="w-100">
               <mat-label>Phone number</mat-label>
@@ -135,6 +142,8 @@
               <mat-error *ngIf="phoneNumber.hasError('phone')">Must be a valid phone number</mat-error>
             </mat-form-field>
           </div>
+        </div>
+        <div class="row">
           <div class="col-md-6">
             <mat-form-field class="w-100">
               <mat-label>Email address</mat-label>

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MatStepper } from '@angular/material/stepper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormUtilsService } from '@core/services/form-utils.service';
@@ -89,10 +89,8 @@ export class StepDisputantComponent
   /**
    * @description
    * Whether to show the address line fields.
-   * Commented out address lookup functionality until license issues resolved
    */
-  //  public showManualButton: boolean;
-  //  public showAddressFields: boolean;
+   public showAddressFields: boolean = false;
 
   constructor(
     protected route: ActivatedRoute,
@@ -117,15 +115,12 @@ export class StepDisputantComponent
     this.maxDateOfBirth = new Date();
     this.maxDateOfBirth.setFullYear(today.getFullYear() - this.MINIMUM_AGE);
     this.isMobile = this.utilsService.isMobile();
-    // this.showManualButton = true;
-    // this.showAddressFields = false;
+    this.showAddressFields = false;
   }
 
   public ngOnInit() {
     this.form = this.disputeFormStateService.stepDisputantForm;
     this.patchForm().then(() => {
-      // this.showManualButton = !this.mailingAddress.value;
-      // this.showAddressFields = !!this.mailingAddress.value;
     });
   }
 
@@ -150,13 +145,50 @@ export class StepDisputantComponent
     this.form.patchValue({postalCode});
     this.form.patchValue({mailingAddress: address});
     this.form.patchValue({city});
-    // this.showManualButton = !address;
-    // this.showAddressFields = !!address;
+    this.showAddressFields = !!address;
   }
 
-  // public showManualAddress(): void {
-  //   this.showAddressFields = true;
-  // }
+  public onMailingAddress(mailingAddress: string) {
+    this.form.patchValue({_mailingAddress: mailingAddress});
+    console.log(this.form.controls['_mailingAddress'].value);
+  }
+
+  public showManualAddress(): void {
+    this.showAddressFields = true;
+
+    this.form.controls['mailingAddress'].setValidators([Validators.required]);
+    this.form.controls['mailingAddress'].updateValueAndValidity();
+    this.form.controls['postalCode'].setValidators([Validators.required, Validators.pattern("[ABCEGHJKLMNPRSTVXY][0-9][ABCEGHJKLMNPRSTVWXYZ] ?[0-9][ABCEGHJKLMNPRSTVWXYZ][0-9]")]);
+    this.form.controls['postalCode'].updateValueAndValidity();
+    this.form.controls['city'].setValidators([Validators.required]);
+    this.form.controls['city'].updateValueAndValidity();
+    this.form.controls['country'].setValidators([Validators.required]);
+    this.form.controls['country'].updateValueAndValidity();
+    this.form.controls['province'].setValidators([Validators.required]);
+    this.form.controls['province'].updateValueAndValidity();
+    this.form.controls['_mailingAddress'].setValidators(null);
+    this.form.controls['_mailingAddress'].updateValueAndValidity();
+    this.form.updateValueAndValidity();
+  }
+
+  
+  public dontShowManualAddress(): void {
+    this.showAddressFields = false;
+
+    this.form.controls['mailingAddress'].setValidators(null);
+    this.form.controls['mailingAddress'].updateValueAndValidity();
+    this.form.controls['postalCode'].setValidators(null);
+    this.form.controls['postalCode'].updateValueAndValidity();
+    this.form.controls['city'].setValidators(null);
+    this.form.controls['city'].updateValueAndValidity();
+    this.form.controls['country'].setValidators(null);
+    this.form.controls['country'].updateValueAndValidity();
+    this.form.controls['province'].setValidators(null);
+    this.form.controls['province'].updateValueAndValidity();
+    this.form.controls['_mailingAddress'].setValidators([Validators.required]);
+    this.form.controls['_mailingAddress'].updateValueAndValidity();
+    this.form.updateValueAndValidity();
+  }
 
   public get phoneNumber(): FormControl {
     return this.form.get('phoneNumber') as FormControl;

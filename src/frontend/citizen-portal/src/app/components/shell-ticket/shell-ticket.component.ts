@@ -393,7 +393,6 @@ const data2: TicketDisputeView
 
       this.http.post(`${this.configuration.basePath }/api/tickets/analyse`,fd)
       .subscribe(res=>{
-        console.log('image data 2',res);
         this.fieldsData = res;
         this.ticketService.setImageData(res);
         this.onFulfilled()

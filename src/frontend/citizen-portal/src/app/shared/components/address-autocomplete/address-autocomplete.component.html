@@ -1,16 +1,17 @@
 <div [formGroup]="form">
 
   <div class="row mb-4">
-    <div class="col-12 pb-2">
+    <div class="col-12 pb-2" *ngIf="!_disableAutoComplete">
 
       <mat-form-field class="w-100"
                       appearance="fill">
         <mat-label>Mailing Address</mat-label>
-        <input matInput
+        <input matInput 
                formControlName="autocomplete"
                autocomplete="new-password"
+               (keyup)="returnAddress()"
                [matAutocomplete]="auto">
-        <mat-autocomplete #auto="matAutocomplete">
+          <mat-autocomplete #auto="matAutocomplete">
           <mat-option *ngFor="let field of addressAutocompleteFields"
                       [value]="field.text"
                       (click)="onAutocomplete(field.id)">
@@ -18,6 +19,7 @@
           </mat-option>
         </mat-autocomplete>
         <mat-icon matSuffix>search</mat-icon>
+        <mat-error>{{ "error.required" | translate }}</mat-error>
         <mat-hint>
           Start with unit number and street number. Address autocompleted by
           <a href="https://www.canadapost.ca/pca" target="_blank">Canada Post</a>.

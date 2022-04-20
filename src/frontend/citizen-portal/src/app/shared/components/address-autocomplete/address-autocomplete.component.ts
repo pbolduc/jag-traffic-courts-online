@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 
 import { EMPTY } from 'rxjs';
 import { debounceTime, exhaustMap, switchMap } from 'rxjs/operators';
@@ -17,9 +17,19 @@ import { AddressAutocompleteResource } from '@shared/services/address-autocomple
 export class AddressAutocompleteComponent implements OnInit {
   @Input() inBc: boolean;
   @Output() autocompleteAddress: EventEmitter<Address>;
+  @Output() mailingAddress: EventEmitter<string>;
+
+  @Input() set disableAutoComplete(value: boolean) {
+    this._disableAutoComplete = value;
+  }
+
+  get disableAutoComplete(): boolean {
+    return this._disableAutoComplete;
+  }
 
   public form: FormGroup;
   public addressAutocompleteFields: AddressAutocompleteFindResponse[];
+  public _disableAutoComplete: boolean;
 
   constructor(
     private fb: FormBuilder,
@@ -27,11 +37,16 @@ export class AddressAutocompleteComponent implements OnInit {
     private toastService: ToastService
   ) {
     this.autocompleteAddress = new EventEmitter<Address>();
+    this.mailingAddress = new EventEmitter<string>();
     this.inBc = false;
   }
 
   public get autocomplete(): FormControl {
     return this.form.get('autocomplete') as FormControl;
+  }
+
+  public returnAddress() {
+    this.mailingAddress.emit(this.form.controls['autocomplete'].value);
   }
 
   public onAutocomplete(id: string) {
@@ -57,7 +72,7 @@ export class AddressAutocompleteComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.form = this.fb.group({ autocomplete: [''] });
+    this.form = this.fb.group({ autocomplete: ['', [Validators.required]] });
 
     this.autocomplete.valueChanges
       .pipe(
