@@ -150,7 +150,6 @@ export class StepDisputantComponent
 
   public onMailingAddress(mailingAddress: string) {
     this.form.patchValue({_mailingAddress: mailingAddress});
-    console.log(this.form.controls['_mailingAddress'].value);
   }
 
   public showManualAddress(): void {

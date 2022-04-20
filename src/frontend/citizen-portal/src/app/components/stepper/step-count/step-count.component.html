@@ -18,8 +18,7 @@
   </app-page-header>
 
   <form (ngSubmit)="onSubmit()"
-        [formGroup]="form"
-        novalidate>
+        [formGroup]="form">
     <section>
       <div class="row">
         <div class="col">
@@ -176,6 +175,7 @@
 </div>
   <app-stepper-footer (save)="onSubmit()"
                       (back)="onBack()"
+                      [disableSave]="!(form.valid)"
                       [secondaryActionButtonIcon]="previousButtonIcon"
                       [secondaryActionButtonKey]="previousButtonKey"
                       [saveButtonKey]="saveButtonKey"

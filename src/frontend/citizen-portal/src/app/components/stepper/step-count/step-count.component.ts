@@ -72,12 +72,13 @@ export class StepCountComponent extends BaseDisputeFormPage implements OnInit,On
     this.form = this.stepControl;
     this.patchForm();
     this.ticketName = this.ticketTypePipe.transform(this.ticketName?.charAt(0));
+    console.log("step-count", this.form);
   }
   
   ngOnChanges(changes: SimpleChanges) {
-    if(changes.isSelectedChekcError && changes.isSelectedChekcError.currentValue){
-      this.errorMsg = changes.isSelectedChekcError.currentValue
-    }
+    // if(changes.isSelectedCheckError && changes.isSelectedCheckError.currentValue){
+    //   this.errorMsg = changes.isSelectedCheckError.currentValue;
+    // }
   }
   public onSubmit(): void {
     this.stepSave.emit(this.stepper);
