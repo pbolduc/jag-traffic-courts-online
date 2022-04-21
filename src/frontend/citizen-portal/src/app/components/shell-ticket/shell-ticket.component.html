@@ -55,13 +55,6 @@
                     <mat-hint>
                       <strong>A ticket number is 2 letters and 8 numbers</strong>
                     </mat-hint>
-                    <!-- <mat-error *ngIf="violationTicketNumber.hasError('required')">
-                      {{ "error.required" | translate }}
-                    </mat-error>
-                    <mat-error *ngIf="violationTicketNumber.hasError('mask')">
-                      This ticket number is not valid. It must be 2 letters and 8
-                      numbers.
-                    </mat-error> -->
                   </mat-form-field>
                 </div>
                 <div class="col-lg-6">
@@ -89,7 +82,6 @@
                   <mat-form-field class="w-100">
                     <mat-label>Violation time</mat-label>
                     <input matInput
-                           type="time"
                            formControlName="violationTime" />
                     <mat-error>{{ "error.required" | translate }}</mat-error>
                   </mat-form-field>
@@ -169,140 +161,6 @@
             </div>
           </form>
         </mat-step>
-        <!-- <mat-step [stepControl]="form">
-          <form [formGroup]="form">
-            <ng-template matStepLabel>Please review the details below and ensure they match the information on the ticket</ng-template>
-            <div class="row">
-              <div class="col-lg-4">
-                <mat-label class="w-100"><strong>Number of counts</strong></mat-label>
-              </div>
-              <div class="col-lg-8 pb-4">
-                <mat-radio-group aria-labelledby="Number of Counts"
-                                 formControlName="_chargeCount">
-                  <mat-radio-button class="w-33"
-                                    [value]="1">1</mat-radio-button>
-                  <mat-radio-button class="w-33"
-                                    [value]="2">2</mat-radio-button>
-                  <mat-radio-button class="w-33"
-                                    [value]="3">3</mat-radio-button>
-                </mat-radio-group>
-              </div>
-  
-              <div class="col-lg-12">
-                <mat-form-field class="table-cell w-100">
-                  <mat-label>Count 1 Act / reg / section</mat-label>
-                  <input type="text"
-                         matInput
-                         formControlName="count1Charge"
-                          />
-                  <mat-error *ngIf="count1Charge.hasError('required')">
-                    {{ "error.required" | translate }}
-                  </mat-error>
-                  
-                </mat-form-field>
-              </div>
-  
-              <div class="offset-lg-6 col-lg-6">
-                <mat-form-field class="table-cell w-100">
-                  <mat-label>Count 1 fine amount ($)</mat-label>
-                  <input matInput
-                         type="number"
-                         formControlName="count1FineAmount"
-                          style="float: left;"/>
-                  <mat-error *ngIf="count1FineAmount.hasError('required')">
-                    {{ "error.required" | translate }}
-                  </mat-error>
-                  <mat-error *ngIf="count1FineAmount.hasError('currency')">
-                    This must be numeric
-                  </mat-error>
-                </mat-form-field>
-              </div>
-  
-              <ng-container *ngIf="_chargeCount.value > 1">
-                <div class="col-lg-12">
-                  <mat-form-field class="table-cell w-100">
-                    <mat-label>Count 2 Act / reg / section</mat-label>
-                    <input type="text"
-                           matInput
-                           formControlName="count2Charge"
-                          />
-                    
-                    <mat-error *ngIf="count2Charge.hasError('required')">
-                      {{ "error.required" | translate }}
-                    </mat-error>
-                    
-                  </mat-form-field>
-                </div>
-                <div class="offset-lg-6 col-lg-6">
-                  <mat-form-field class="table-cell w-100">
-                    <mat-label>Count 2 fine amount ($)</mat-label>
-                    <input matInput
-                           type="number"
-                           formControlName="count2FineAmount"
-                           />
-                    <mat-error *ngIf="count2FineAmount.hasError('required')">
-                      {{ "error.required" | translate }}
-                    </mat-error>
-                    <mat-error *ngIf="count2FineAmount.hasError('currency')">
-                      This must be numeric
-                    </mat-error>
-                  </mat-form-field>
-                </div>
-              </ng-container>
-  
-              <ng-container *ngIf="_chargeCount.value > 2">
-                <div class="col-lg-12">
-                  <mat-form-field class="table-cell w-100">
-                    <mat-label>Count 3 Act / reg / section</mat-label>
-                    <input type="text"
-                           matInput
-                           formControlName="count3Charge"
-                           />
-                    <mat-error *ngIf="count3Charge.hasError('required')">
-                      {{ "error.required" | translate }}
-                    </mat-error>
-                  </mat-form-field>
-                </div>
-                <div class="offset-lg-6 col-lg-6">
-                  <mat-form-field class="table-cell w-100">
-                    <mat-label>Count 3 fine amount ($)</mat-label>
-                    <input matInput
-                           type="number"
-                           formControlName="count3FineAmount"
-                           />
-                    <mat-error *ngIf="count3FineAmount.hasError('required')">
-                      {{ "error.required" | translate }}
-                    </mat-error>
-                    <mat-error *ngIf="count3FineAmount.hasError('currency')">
-                      This must be numeric
-                    </mat-error>
-                  </mat-form-field>
-                </div>
-              </ng-container>
-            </div>
-            <div class="row mb-4 mt-4">
-              <div class="col-lg-5">
-                <button id="secondaryButton"
-                        mat-stroked-button
-                        type="button"
-                        color="primary"
-                        class="large"
-                        matStepperPrevious
-                        >
-                   Back
-                </button>
-              </div>
-              <div class="offset-lg-2 col-lg-5">
-                <button type="button"
-                        mat-flat-button
-                        color="primary"
-                        matStepperNext>
-                  Next >
-                </button>
-              </div>
-            </div>
-          </form>
-        </mat-step> -->
         <mat-step>
           <ng-template matStepLabel>Save information and create online ticket</ng-template>
           <p class="text-dark">Ensure all information entered above is correct to the best of my knowledge before submission.<strong>
@@ -322,27 +180,6 @@
       </mat-stepper>
     </div>
   </div>
-  <!-- <div class="row mb-4 mt-4">
-    <div class="col-lg-5">
-      <button id="secondaryButton"
-              mat-stroked-button
-              type="button"
-              color="primary"
-              class="large"
-              routerLink="/ticket/find">
-        Cancel and search again
-      </button>
-    </div>
-    <div class="offset-lg-2 col-lg-5">
-      <button type="button"
-              mat-flat-button
-              color="primary"
-              class="large"
-              (click)="onSubmit()">
-        Save and continue to resolution options
-      </button>
-    </div>
-  </div> -->
 
   <app-resolution-footer></app-resolution-footer>
 </app-page>

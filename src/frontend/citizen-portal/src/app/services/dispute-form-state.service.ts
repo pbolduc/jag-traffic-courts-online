@@ -7,16 +7,16 @@ import { FormUtilsService } from '@core/services/form-utils.service';
 import { LoggerService } from '@core/services/logger.service';
 import { FormControlValidators } from '@core/validators/form-control.validators';
 import { FormGroupValidators } from '@core/validators/form-group.validators';
-import { AdditionalView } from '@shared/models/additionalView.model';
-import { DisputantView } from '@shared/models/disputantView.model';
-import { OffenceView } from '@shared/models/offenceView.model';
-import { TicketDisputeView } from '@shared/models/ticketDisputeView.model';
+// import { AdditionalView } from '@shared/models/additionalView.model';
+// import { DisputantView } from '@shared/models/disputantView.model';
+// import { OffenceView } from '@shared/models/offenceView.model';
+// import { TicketDisputeView } from '@shared/models/ticketDisputeView.model';
 import { AbstractFormStateService } from 'app/components/classes/abstract-form-state-service.class';
 
 @Injectable({
   providedIn: 'root',
 })
-export class DisputeFormStateService extends AbstractFormStateService<TicketDisputeView> {
+export class DisputeFormStateService extends AbstractFormStateService<any> {
   public stepDisputantForm: FormGroup;
   public stepOffence1Form: FormGroup;
   public stepOffence2Form: FormGroup;
@@ -43,7 +43,7 @@ export class DisputeFormStateService extends AbstractFormStateService<TicketDisp
    * can't be loaded during instantiation.
    */
   public async setForm(
-    ticket: TicketDisputeView,
+    ticket: any,
     forcePatch: boolean = false
   ): Promise<void> {
     super.setForm(ticket, forcePatch);
@@ -53,7 +53,7 @@ export class DisputeFormStateService extends AbstractFormStateService<TicketDisp
    * @description
    * Convert reactive form abstract controls into JSON.
    */
-  public get json(): TicketDisputeView {
+  public get json(): any {
     const stepDisputant = this.stepDisputantForm.getRawValue();
     const stepOffence1 = this.stepOffence1Form.getRawValue();
     const stepOffence2 = this.stepOffence2Form.getRawValue();
@@ -73,7 +73,7 @@ export class DisputeFormStateService extends AbstractFormStateService<TicketDisp
     return ticket;
   }
 
-  public get jsonTicketDispute(): TicketDisputeView {
+  public get jsonTicketDispute(): any {
     const stepDisputant = this.stepDisputantForm.getRawValue();
     const stepOffence1 = this.stepOffence1Form.getRawValue();
     const stepOffence2 = this.stepOffence2Form.getRawValue();
@@ -81,22 +81,22 @@ export class DisputeFormStateService extends AbstractFormStateService<TicketDisp
     const stepAdditional = this.stepAdditionalForm.getRawValue();
     const stepOverview = this.stepOverviewForm.getRawValue();
 
-    const dispute: TicketDisputeView = {
+    const dispute: any = {
       ...stepOverview,
     };
     dispute.disputant = stepDisputant;
     dispute.offences = [];
 
     if (stepOffence1.offenceNumber) {
-      const offence1: OffenceView = { ...stepOffence1 };
+      const offence1: any = { ...stepOffence1 };
       dispute.offences.push(offence1);
     }
     if (stepOffence2.offenceNumber) {
-      const offence2: OffenceView = { ...stepOffence2 };
+      const offence2: any = { ...stepOffence2 };
       dispute.offences.push(offence2);
     }
     if (stepOffence3.offenceNumber) {
-      const offence3: OffenceView = { ...stepOffence3 };
+      const offence3: any = { ...stepOffence3 };
       dispute.offences.push(offence3);
     }
 
@@ -104,15 +104,15 @@ export class DisputeFormStateService extends AbstractFormStateService<TicketDisp
     return dispute;
   }
 
-  public get disputant(): DisputantView {
+  public get disputant(): any {
     return this.stepDisputantForm.getRawValue();
   }
 
-  public get additional(): AdditionalView {
+  public get additional(): any {
     return this.stepAdditionalForm.getRawValue();
   }
 
-  public get offences(): OffenceView[] {
+  public get offences(): any[] {
     const stepOffence1 = this.stepOffence1Form.getRawValue();
     const stepOffence2 = this.stepOffence2Form.getRawValue();
     const stepOffence3 = this.stepOffence3Form.getRawValue();
@@ -216,7 +216,7 @@ export class DisputeFormStateService extends AbstractFormStateService<TicketDisp
    * @description
    * Manage the conversion of JSON to reactive forms.
    */
-  protected patchForm(ticket: TicketDisputeView) {
+  protected patchForm(ticket: any) {
     if (!ticket) {
       return;
     }

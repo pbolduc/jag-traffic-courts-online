@@ -1,26 +1,26 @@
 import { AddressAutocompleteFindResponse, AddressAutocompleteRetrieveResponse } from '@shared/models/address-autocomplete.model';
 import { Address } from '@shared/models/address.model';
-import { DisputantView } from '@shared/models/disputantView.model';
-import { OffenceView } from '@shared/models/offenceView.model';
-import { TicketDisputeView } from '@shared/models/ticketDisputeView.model';
+// import { DisputantView } from '@shared/models/disputantView.model';
+// import { OffenceView } from '@shared/models/offenceView.model';
+// import { TicketDisputeView } from '@shared/models/ticketDisputeView.model';
 import * as faker from 'faker';
 import { BehaviorSubject } from 'rxjs';
 
 export class MockDisputeService {
-  private _ticket: BehaviorSubject<TicketDisputeView>;
+  private _ticket: BehaviorSubject<any>;
 
   constructor() {
     const ticket = this.createTicketWithoutDisputes();
     // const ticket = this.createTicketWithDispute();
 
-    this._ticket = new BehaviorSubject<TicketDisputeView>(ticket);
+    this._ticket = new BehaviorSubject<any>(ticket);
   }
 
-  public get ticket$(): BehaviorSubject<TicketDisputeView> {
+  public get ticket$(): BehaviorSubject<any> {
     return this._ticket;
   }
 
-  public get ticket(): TicketDisputeView {
+  public get ticket(): any {
     return this._ticket.value;
   }
 
@@ -90,7 +90,7 @@ export class MockDisputeService {
     return resp;
   }
 
-  private createTicketWithoutDisputes(): TicketDisputeView {
+  private createTicketWithoutDisputes(): any {
     const soonDate =
       faker.date.soon().getFullYear() +
       '-' +
@@ -98,7 +98,7 @@ export class MockDisputeService {
       '-' +
       faker.date.soon().getDate();
 
-    const ticket: TicketDisputeView = {
+    const ticket: any = {
       violationTicketNumber:
         'EA' +
         faker.datatype
@@ -121,7 +121,7 @@ export class MockDisputeService {
             max: 59,
           })
           .toString(),
-      violationDate: new Date(),
+      // violationDate: new Date(),
       discountDueDate: soonDate,
       discountAmount: 25,
       disputant: null,
@@ -135,7 +135,7 @@ export class MockDisputeService {
     ticket.disputant = this.createEmptyDisputant();
 
     // --------------------------
-    let offence: OffenceView = {
+    let offence = {
       offenceNumber: 1,
       ticketedAmount: 126,
       amountDue: 0,
@@ -192,7 +192,7 @@ export class MockDisputeService {
     return ticket;
   }
 
-  private createTicketWithDispute(): TicketDisputeView {
+  private createTicketWithDispute(): any {
     const soonDate =
       faker.date.soon().getFullYear() +
       '-' +
@@ -200,7 +200,7 @@ export class MockDisputeService {
       '-' +
       faker.date.soon().getDate();
 
-    const ticket: TicketDisputeView = {
+    const ticket: any = {
       violationTicketNumber:
         'EA' +
         faker.datatype
@@ -223,7 +223,7 @@ export class MockDisputeService {
             max: 59,
           })
           .toString(),
-      violationDate: new Date(),
+      // violationDate: new Date(),
       discountDueDate: soonDate,
       discountAmount: 25,
       disputant: null,
@@ -252,7 +252,7 @@ export class MockDisputeService {
     const offenceDate = faker.date.soon().toString();
 
     // --------------------------
-    let offence: OffenceView = {
+    let offence: any = {
       offenceNumber: 1,
       ticketedAmount: 126,
       amountDue: 126,
@@ -334,7 +334,7 @@ export class MockDisputeService {
     return ticket;
   }
 
-  private createDisputant(): DisputantView {
+  private createDisputant(): any {
     const mailingAddress = new Address('CA', 'BC', faker.address.streetAddress(), faker.address.secondaryAddress(), faker.address.city(), 'V8R3E3', 0);
     return {
       lastName: faker.name.lastName(),
@@ -352,7 +352,7 @@ export class MockDisputeService {
     };
   }
 
-  private createEmptyDisputant(): DisputantView {
+  private createEmptyDisputant(): any {
     return {
       lastName: null,
       givenNames: null,

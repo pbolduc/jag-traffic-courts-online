@@ -8,23 +8,29 @@
                     color="primary"
                     class="me-4 mb-2"></mat-checkbox>
         <span class="h2">
-          <strong>Count {{ count.offenceNumber }}</strong>
+          <strong>Count {{ count.count }}</strong>
         </span>
     </div>
   </div>
   <div class="col-lg-8">
     <small class="d-block"> Description of offence </small>
-    <div class="text">{{ count.offenceDescription | titlecase }}</div>
+    <div class="text">{{ count.description | titlecase }}</div>
   </div>
   <div class="col-lg-2">
     <small class="d-block">Offence amount</small>
-    <div class="text">{{ count._amountDue | currency }}</div>
+    <div class="text">{{ count.amount_due | currency }}</div>
   </div>
 </div>
 <hr />
 
 <div class="row mb-2">
   <div class="offset-lg-2 col-lg-4">
+    <small class="d-block">Status</small>
+    <span>
+      <div class="text">Active</div>
+    </span>
+  </div>
+  <!-- <div class="offset-lg-2 col-lg-4">
     <small class="d-block">Status</small>
     <span [ngClass]="{
         'text-danger':
@@ -40,9 +46,9 @@
       }">
       <div class="text">{{ count._offenceStatusDesc }}</div>
     </span>
-  </div>
-  <!-- <div class="col-lg-4" *ngIf="count.ticketedAmount !== count.amountDue">
+  </div> -->
+  <!-- <div class="col-lg-4" *ngIf="count.ticketed_amount !== count.amount_due">
     <small class="d-block">Offence amount</small>
-    <div class="text">{{ count.ticketedAmount | currency }}</div>
+    <div class="text">{{ count.ticketed_amount | currency }}</div>
   </div> -->
 </div>

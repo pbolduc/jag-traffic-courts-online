@@ -17,8 +17,7 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
-import { ApiMessageResponse } from '../model/models';
-import { LookupsAllApiResultResponse } from '../model/models';
+import { Statute } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -86,14 +85,21 @@ export class LookupService {
     }
 
     /**
+     * Returns a list of Violation Ticket Statutes filtered by given section text (if provided).
+     * @param section Motor vehicle act Section text to query by, ie \&quot;13(1)(a)\&quot; returns \&quot;Motor Vehicle or Trailer without Licence\&quot; contravention, or blank for no filter.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
-     * @deprecated
      */
-    public apiLookupGetGet(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<LookupsAllApiResultResponse>;
-    public apiLookupGetGet(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<LookupsAllApiResultResponse>>;
-    public apiLookupGetGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<LookupsAllApiResultResponse>>;
-    public apiLookupGetGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+    public apiLookupStatutesGet(section?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<Array<Statute>>;
+    public apiLookupStatutesGet(section?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<Array<Statute>>>;
+    public apiLookupStatutesGet(section?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<Array<Statute>>>;
+    public apiLookupStatutesGet(section?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (section !== undefined && section !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>section, 'section');
+        }
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -115,8 +121,9 @@ export class LookupService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<LookupsAllApiResultResponse>(`${this.configuration.basePath}/api/lookup/get`,
+        return this.httpClient.get<Array<Statute>>(`${this.configuration.basePath}/api/lookup/statutes`,
             {
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

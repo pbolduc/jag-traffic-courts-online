@@ -11,8 +11,9 @@
  */
 
 
-export interface CourtLocation { 
-    code?: string | null;
-    name?: string | null;
+export interface TicketCount { 
+    offenceDeclaration?: string | null;
+    timeToPayRequest?: boolean;
+    fineReductionRequest?: boolean;
 }
 

@@ -8,7 +8,7 @@ import { DisputeSubmitSuccessComponent } from '@components/dispute-submit-succes
 import { LoggerService } from '@core/services/logger.service';
 import { ConfirmDialogComponent } from '@shared/dialogs/confirm-dialog/confirm-dialog.component';
 import { DialogOptions } from '@shared/dialogs/dialog-options.model';
-import { TicketDisputeView } from '@shared/models/ticketDisputeView.model';
+// import { TicketDisputeView } from '@shared/models/ticketDisputeView.model';
 import { AppRoutes } from 'app/app.routes';
 import { BaseDisputeFormPage } from 'app/components/classes/BaseDisputeFormPage';
 import { DisputeFormStateService } from 'app/services/dispute-form-state.service';
@@ -28,7 +28,7 @@ export class DisputeStepperComponent
   @ViewChild(MatStepper)
   private stepper: MatStepper;
 
-  public overviewTicket: TicketDisputeView;
+  public overviewTicket;
 
   public disputantForm: FormGroup;
   public offence1Form: FormGroup;
@@ -343,7 +343,7 @@ public getCountData(newObj):void{
 
           this.busy = this.disputeResource
             .createTicketDispute(payload)
-            .subscribe((newDisputeTicket: TicketDisputeView) => {
+            .subscribe((newDisputeTicket: any) => {
               // newDisputeTicket.additional = {
               //   _isCourtRequired:true,
               //   _isReductionRequired: true,

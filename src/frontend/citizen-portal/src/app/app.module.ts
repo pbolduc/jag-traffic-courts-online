@@ -56,12 +56,6 @@ import { FormsModule } from '@angular/forms';
 registerLocaleData(localeEn, 'en');
 registerLocaleData(localeFr, 'fr');
 
-// export function appInit(appConfigService: AppConfigService) {
-//   return () => {
-//     return appConfigService.loadAppConfig();
-//   };
-// }
-
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
@@ -125,12 +119,6 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
       provide: STEPPER_GLOBAL_OPTIONS,
       useValue: { showError: true }
     },
-    // {
-    //   provide: APP_INITIALIZER,
-    //   useFactory: appInit,
-    //   multi: true,
-    //   deps: [AppConfigService], // , KeycloakService],
-    // },
     WindowRefService,
   ],
   bootstrap: [AppComponent],

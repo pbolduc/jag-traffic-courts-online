@@ -1,22 +1,22 @@
 import { Injectable } from '@angular/core';
 import { ShellTicketData } from '@shared/models/shellTicketData.model';
-import { TicketDisputeView } from '@shared/models/ticketDisputeView.model';
+// import { TicketDisputeView } from '@shared/models/ticketDisputeView.model';
 import { BehaviorSubject } from 'rxjs';
 
 export interface IDisputeService {
-  ticket$: BehaviorSubject<TicketDisputeView>;
-  ticket: TicketDisputeView;
+  ticket$: BehaviorSubject<any>;
+  ticket: any;
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class DisputeService implements IDisputeService {
-  private _ticket: BehaviorSubject<TicketDisputeView>;
+  private _ticket: BehaviorSubject<any>;
   private _shellTicketData: BehaviorSubject<ShellTicketData>;
 
   constructor() {
-    this._ticket = new BehaviorSubject<TicketDisputeView>(null);
+    this._ticket = new BehaviorSubject<any>(null);
     this._shellTicketData = new BehaviorSubject<ShellTicketData>(null);
   }
 
@@ -24,11 +24,11 @@ export class DisputeService implements IDisputeService {
     return this._shellTicketData;
   }
 
-  public get ticket$(): BehaviorSubject<TicketDisputeView> {
+  public get ticket$(): BehaviorSubject<any> {
     return this._ticket;
   }
 
-  public get ticket(): TicketDisputeView {
+  public get ticket(): any {
     return this._ticket.value;
   }
 

@@ -16,7 +16,8 @@ import { ImageRequirementsDialogComponent } from '@shared/dialogs/image-requirem
 import { TicketExampleDialogComponent } from '@shared/dialogs/ticket-example-dialog/ticket-example-dialog.component';
 import { TicketNotFoundDialogComponent } from '@shared/dialogs/ticket-not-found-dialog/ticket-not-found-dialog.component';
 import { ShellTicketData } from '@shared/models/shellTicketData.model';
-import { TicketDisputeView } from '@shared/models/ticketDisputeView.model';
+// import { TicketDisputeView } from '@shared/models/ticketDisputeView.model';
+import { TicketStorageService } from 'app/services/ticket-storage.service';
 import { Configuration, TicketsService } from 'app/api';
 import { AppRoutes } from 'app/app.routes';
 import { DisputeResourceService } from 'app/services/dispute-resource.service';
@@ -40,7 +41,7 @@ export class FindTicketComponent implements OnInit {
   public notFound = false;
   public toolTipData = 'It is preferred that you include an image of your blue violation ticket. If you are not able to upload an image or take a photo of your ticket on your mobile device. You will need:  1. Ticket number and violation date 2. Driver\'s license number and loation 3. Count Act / Section / Description 4. Fine amount';
   // protected basePath = 'http://localhost:5000'; 
-  protected basePath = ''; 
+  protected basePath = '';
   public configuration = new Configuration();
   // public encoder: HttpParameterCodec;
 
@@ -54,13 +55,14 @@ export class FindTicketComponent implements OnInit {
     private ngProgress: NgProgress,
     private logger: LoggerService,
     private http: HttpClient,
-    public ticketService:TicketsService
+    public ticketService: TicketsService,
+    private ticketStorageService: TicketStorageService,
   ) {
     //
-  
-  if (typeof this.configuration.basePath !== 'string') {
+
+    if (typeof this.configuration.basePath !== 'string') {
       this.configuration.basePath = this.basePath;
-  }
+    }
   }
 
   public ngOnInit(): void {
@@ -82,8 +84,6 @@ export class FindTicketComponent implements OnInit {
     });
   }
 
-  
-  
   public onSearch(): void {
     this.logger.log('FindTicketComponent::onSearch');
 
@@ -115,7 +115,7 @@ export class FindTicketComponent implements OnInit {
         }
       });
   }
- public onTicketNotFound(): void {
+  public onTicketNotFound(): void {
     this.dialog.open(TicketNotFoundDialogComponent);
   }
   public onFileChange(event: any) {
@@ -131,7 +131,7 @@ export class FindTicketComponent implements OnInit {
     }
 
     const mimeType = event.target.files[0].type;
-     
+
 
     if (!((mimeType.match(/image\/png/) != null || mimeType.match(/image\/jpeg/) != null) || mimeType.match(/application\/pdf/) != null)) {
       this.logger.info('Only images and pdf are supported');
@@ -159,10 +159,10 @@ export class FindTicketComponent implements OnInit {
         ticketImage
       };
 
-      const formParams = { image:ticketFile};
+      const formParams = { image: ticketFile };
       const fd = new FormData();
-      fd.append('file',ticketFile);
-      console.log('fd',ticketFile,filename);
+      fd.append('file', ticketFile);
+      console.log('fd', ticketFile, filename);
 
       // this.busy = this.disputeResource
       // .postTicket(ticketFile)
@@ -178,35 +178,35 @@ export class FindTicketComponent implements OnInit {
       //     this.onTicketNotFound();
       //   }
       // });
-      
-      this.http.post(`${this.configuration.basePath }/api/tickets/analyse`,fd)
-      .subscribe(res=>{
-        console.log('image data',res);
-        if(res){
-          this.ticketService.setImageData(res);
-          this.disputeService.shellTicketData$.next(shellTicketData);
-        this.router.navigate([AppRoutes.disputePath(AppRoutes.SHELL)]);
-        }
-        else {
-          this.notFound = true;
-          this.onTicketNotFound();
-        }
-       
-      },
-      (err)=>{
-        console.log('err',err);
-        const data: DialogOptions = {
-          titleKey: err.error.title,
-          actionType: 'warn',
-          messageKey: err.error.errors.toString(),
-          actionTextKey: 'Ok',
-          cancelHide: true,
-        };
-        
-        this.dialog.open(ConfirmDialogComponent, { data })
-      })
-        
-      
+
+      this.http.post(`${this.configuration.basePath}/api/tickets/analyse`, fd)
+        .subscribe(res => {
+          console.log('image data', res);
+          if (res) {
+            this.ticketStorageService.setImageData(res);
+            this.disputeService.shellTicketData$.next(shellTicketData);
+            this.router.navigate([AppRoutes.disputePath(AppRoutes.SHELL)]);
+          }
+          else {
+            this.notFound = true;
+            this.onTicketNotFound();
+          }
+
+        },
+          (err) => {
+            console.log('err', err);
+            const data: DialogOptions = {
+              titleKey: err.error.title,
+              actionType: 'warn',
+              messageKey: err.error.errors.toString(),
+              actionTextKey: 'Ok',
+              cancelHide: true,
+            };
+
+            this.dialog.open(ConfirmDialogComponent, { data })
+          })
+
+
     };
   }
 

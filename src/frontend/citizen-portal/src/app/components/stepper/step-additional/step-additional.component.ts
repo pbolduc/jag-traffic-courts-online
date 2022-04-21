@@ -12,7 +12,6 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatStepper } from '@angular/material/stepper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Config } from '@config/config.model';
-import { ConfigService } from '@config/config.service';
 import { FormUtilsService } from '@core/services/form-utils.service';
 import { LoggerService } from '@core/services/logger.service';
 import { UtilsService } from '@core/services/utils.service';
@@ -64,7 +63,6 @@ export class StepAdditionalComponent extends BaseDisputeFormPage implements OnIn
     protected disputeFormStateService: DisputeFormStateService,
     private formUtilsService: FormUtilsService,
     private utilsService: UtilsService,
-    private configService: ConfigService,
     private logger: LoggerService
   ) {
     super(
@@ -76,7 +74,7 @@ export class StepAdditionalComponent extends BaseDisputeFormPage implements OnIn
       disputeFormStateService
     );
 
-    this.languages = this.configService.languages;
+    // this.languages = this.configService.languages;
     this.languages = [{name:'French',code:'fr'},{name:'Spanish',code:'sp'},{name:'Arabic',code:'Ar'}];
   }
 

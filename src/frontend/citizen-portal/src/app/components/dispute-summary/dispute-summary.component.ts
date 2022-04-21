@@ -2,17 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoggerService } from '@core/services/logger.service';
 import { TranslateService } from '@ngx-translate/core';
-import { TicketDisputeView } from '@shared/models/ticketDisputeView.model';
+import { ViolationTicket, ViolationTicketCount } from 'app/api'
 import { AppRoutes } from 'app/app.routes';
 import { AppConfigService } from 'app/services/app-config.service';
 import { DisputeResourceService } from 'app/services/dispute-resource.service';
 import { DisputeService } from 'app/services/dispute.service';
 import { Subscription } from 'rxjs';
-import {ticketTypes} from '../../shared/enums/ticket-type.enum';
-import {TicketNotFoundDialogComponent} from '@shared/dialogs/ticket-not-found-dialog/ticket-not-found-dialog.component';
+import { ticketTypes } from '../../shared/enums/ticket-type.enum';
+import { TicketNotFoundDialogComponent } from '@shared/dialogs/ticket-not-found-dialog/ticket-not-found-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { TicketTypePipe } from '@shared/pipes/ticket-type.pipe';
-
 
 @Component({
   selector: 'app-dispute-summary',
@@ -20,7 +19,6 @@ import { TicketTypePipe } from '@shared/pipes/ticket-type.pipe';
   styleUrls: ['./dispute-summary.component.scss'],
 })
 export class DisputeSummaryComponent implements OnInit {
-
   constructor(
     protected route: ActivatedRoute,
     protected router: Router,
@@ -31,9 +29,11 @@ export class DisputeSummaryComponent implements OnInit {
     private translateService: TranslateService,
     private appConfigService: AppConfigService,
     private ticketTypePipe: TicketTypePipe
-  ) {}
+  ) {
+  }
+
   public busy: Subscription;
-  public ticket: TicketDisputeView;
+  public ticket: ViolationTicket;
   public defaultLanguage: string;
   public useMockServices: boolean;
   public ticketType: string;
@@ -61,22 +61,22 @@ export class DisputeSummaryComponent implements OnInit {
         return;
       }
 
-      const ticket = this.disputeService.ticket;
+      const ticket : ViolationTicket = this.disputeService.ticket;
       this.logger.info('DisputeSummaryComponent::ticket', ticket);
       if (
         ticket &&
-        ticket.violationTicketNumber === ticketNumber &&
-        ticket.violationTime === ticketTime
+        ticket.ticket_number === ticketNumber &&
+        ticket.issued_date === ticketTime
       ) {
         this.logger.info('DisputeSummaryComponent:: Use existing ticket');
         this.ticket = ticket;
       } else {
         this.logger.info('DisputeSummaryComponent:: Search for ticket');
-         this.performSearch(params);
+        this.performSearch(params);
       }
     });
     this.ticketType = this.ticketTypePipe.transform(
-      this.ticket?.violationTicketNumber.charAt(0)
+      this.ticket?.ticket_number.charAt(0)
     );
   }
   private performSearch(params): void {
@@ -95,6 +95,9 @@ export class DisputeSummaryComponent implements OnInit {
 
       this.disputeService.ticket$.next(response);
       this.ticket = response;
+      this.ticketType = this.ticketTypePipe.transform(
+        this.ticket?.ticket_number.charAt(0)
+      );
     });
   }
   public onTicketNotFound(): void {

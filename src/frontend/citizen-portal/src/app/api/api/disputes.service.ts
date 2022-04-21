@@ -21,6 +21,7 @@ import { CreateDisputeCommand } from '../model/models';
 import { CreateOffenceDisputeCommand } from '../model/models';
 import { Dispute } from '../model/models';
 import { ProblemDetails } from '../model/models';
+import { Request } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -88,13 +89,15 @@ export class DisputesService {
     }
 
     /**
+     * 
+     * @param request 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDisputesCreatePost(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<any>;
-    public apiDisputesCreatePost(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpResponse<any>>;
-    public apiDisputesCreatePost(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpEvent<any>>;
-    public apiDisputesCreatePost(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined}): Observable<any> {
+    public apiDisputesCreatePost(request?: Request, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<any>;
+    public apiDisputesCreatePost(request?: Request, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpResponse<any>>;
+    public apiDisputesCreatePost(request?: Request, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined}): Observable<HttpEvent<any>>;
+    public apiDisputesCreatePost(request?: Request, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -110,13 +113,24 @@ export class DisputesService {
         }
 
 
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json',
+            'text/json',
+            'application/_*+json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+        }
+
         let responseType_: 'text' | 'json' = 'json';
         if(localVarHttpHeaderAcceptSelected && localVarHttpHeaderAcceptSelected.startsWith('text')) {
             responseType_ = 'text';
         }
 
         return this.httpClient.post<any>(`${this.configuration.basePath}/api/disputes/create`,
-            null,
+            request,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,

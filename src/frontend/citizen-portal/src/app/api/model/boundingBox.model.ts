@@ -12,6 +12,9 @@
 import { Point } from './point.model';
 
 
+/**
+ * A list of 4 points representing the quadrilateral bounding box that   outlines the text. The points are listed in clockwise order relative   to the text orientation: top-left, top-right, bottom-right, bottom-left.
+ */
 export interface BoundingBox { 
     points?: Array<Point> | null;
 }

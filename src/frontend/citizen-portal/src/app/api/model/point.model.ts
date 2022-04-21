@@ -11,6 +11,9 @@
  */
 
 
+/**
+ * The x, y coordinate of a point on a bounding box.
+ */
 export interface Point { 
     x?: number;
     y?: number;

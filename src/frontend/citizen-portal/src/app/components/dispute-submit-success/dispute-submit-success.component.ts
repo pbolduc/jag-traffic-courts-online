@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoggerService } from '@core/services/logger.service';
 import { ticketTypes } from '@shared/enums/ticket-type.enum';
-import { TicketDisputeView } from '@shared/models/ticketDisputeView.model';
+// import { TicketDisputeView } from '@shared/models/ticketDisputeView.model';
 import { TicketTypePipe } from '@shared/pipes/ticket-type.pipe';
 import { AppRoutes } from 'app/app.routes';
 import { DisputeResourceService } from 'app/services/dispute-resource.service';
@@ -18,7 +18,7 @@ import { Subscription } from 'rxjs';
 export class DisputeSubmitSuccessComponent implements OnInit {
   debugger
   public busy: Subscription;
-  public ticket: TicketDisputeView;
+  public ticket: any;
   public countList:any;
   public readonly changeOfAddressURL: string =
     'https://www2.gov.bc.ca/assets/gov/law-crime-and-justice/courthouse-services/court-files-records/court-forms/traffic/ptr805.pdf?forcedownload=true';

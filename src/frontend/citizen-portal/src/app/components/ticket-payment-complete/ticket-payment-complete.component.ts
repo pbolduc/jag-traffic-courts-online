@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoggerService } from '@core/services/logger.service';
-import { TicketDisputeView } from '@shared/models/ticketDisputeView.model';
+// import { TicketDisputeView } from '@shared/models/ticketDisputeView.model';
 import { AppRoutes } from 'app/app.routes';
 import { AppConfigService } from 'app/services/app-config.service';
 import { DisputeResourceService } from 'app/services/dispute-resource.service';
@@ -15,7 +15,7 @@ import { Subscription } from 'rxjs';
 })
 export class TicketPaymentCompleteComponent implements OnInit {
   public busy: Subscription;
-  public ticket: TicketDisputeView;
+  public ticket: any;
   public paymentStatus: string;
   public paymentConfNo: string;
 

@@ -9,10 +9,15 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { LookupsAll } from './lookupsAll.model';
+import { DayOfWeek } from './dayOfWeek.model';
 
 
-export interface LookupsAllApiResultResponse { 
-    result?: LookupsAll;
+export interface DateOnly { 
+    year?: number;
+    month?: number;
+    day?: number;
+    dayOfWeek?: DayOfWeek;
+    readonly dayOfYear?: number;
+    readonly dayNumber?: number;
 }
 
