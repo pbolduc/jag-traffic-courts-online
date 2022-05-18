@@ -109,11 +109,11 @@
         </app-alert>
       </div>
     </div>
-    <div class="row" *ngIf="countsActions.appear_in_court.length !== noticeOfDispute.disputed_counts.length">
+    <div class="row" *ngIf="countsActions.not_appear_in_court.length > 0">
       <div class="col">
         <app-alert type="warning" icon="info">
           <ng-container #alertContent class="alert-content">
-            <strong>You have selected that you do not want to attend a court hearing</strong>
+            <strong>You have selected that you do not want to attend a court hearing.</strong>
             You will be notified in writing to the address supplied above by the Court if your request was successful.
           </ng-container>
         </app-alert>
